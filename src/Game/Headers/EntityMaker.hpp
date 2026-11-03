@@ -10,7 +10,34 @@
 
 namespace EntityMaker
 {
+	Entity movingObject
+	(
+		const Component::Color& color,
+		const Component::ZIndex& zIndex,
+		const Component::Texture& texture,
+		const Component::Position& position,
+		const Component::Velocity& velocity,
+		const Component::Transform& transform,
+		const Component::OriginPoint& originPoint,
+		const Component::Acceleration& acceleration
+	);
 
+	Entity staticObject
+	(
+		const Component::Color& color,
+		const Component::ZIndex& zIndex,
+		const Component::Texture& texture,
+		const Component::Position& position,
+		const Component::Transform& transform,
+		const Component::OriginPoint& originPoint
+	);
+
+	Entity text
+	(
+		const Component::Text& text,
+		const Component::ZIndex& zIndex,
+		const Component::Position& position
+	);
 }
 
 #endif
