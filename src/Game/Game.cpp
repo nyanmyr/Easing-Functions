@@ -17,6 +17,7 @@ int main()
 	nc().registerComponent<Component::Sprite>();
 	nc().registerComponent<Component::Texture>();
 	nc().registerComponent<Component::Color>();
+	nc().registerComponent<Component::SliderMovement>();
 
 	// event registration
 	nc().registerEvent<Event::SetSpriteOrigin>();

@@ -132,6 +132,39 @@ namespace Update
 		return std::pow(2.0, -10.0 * progress) *
 			std::sin((progress * 10.0 - 0.75) * c4) + 1.0;
 	}
+	void applyLinear
+	(
+		const Entity target,
+		const DeltaTime dt
+	)
+	{
+		auto& velocity = nc().getComponent<Component::Velocity>(target);
+		auto& sliderMovement = nc().getComponent<Component::SliderMovement>(target);
+		const auto& pos = nc().getComponent<Component::Position>(target);
+		const auto& acceleration = nc().getComponent<Component::Acceleration>(target);
+
+		velocity.x += (acceleration.x * dt) * (sliderMovement.rightward ? 1 : -1);
+
+		if (velocity.x > velocity.maxX)
+		{
+			velocity.x = velocity.maxX;
+		}
+		else if (velocity.x < velocity.minX)
+		{
+			velocity.x = velocity.minX;
+		}
+
+		if (pos.x > sliderMovement.end)
+		{
+			sliderMovement.rightward = false;
+			velocity.x = -velocity.x;
+		}
+		if (pos.x < sliderMovement.start)
+		{
+			sliderMovement.rightward = true;
+			velocity.x = -velocity.x;
+		}
+	}
 	void move(const DeltaTime dt)
 	{
 		const auto& velocityArray = nc().getComponentArray<Component::Velocity>();

@@ -15,7 +15,8 @@ namespace EntityMaker
 		const Component::Velocity& velocity,
 		const Component::Transform& transform,
 		const Component::OriginPoint& originPoint,
-		const Component::Acceleration& acceleration
+		const Component::Acceleration& acceleration,
+		const Component::SliderMovement& sliderMovement
 	)
 	{
 		Entity entity = nc().createEntity();
@@ -78,6 +79,12 @@ namespace EntityMaker
 		(
 			entity,
 			acceleration
+		);
+
+		nc().addComponent
+		(
+			entity,
+			sliderMovement
 		);
 
 		return entity;

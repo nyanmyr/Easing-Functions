@@ -85,6 +85,13 @@ namespace Component {
 		sf::Color data = sf::Color::White;
 	};
 
+	struct SliderMovement
+	{
+		double start = 0.0;
+		double end = 0.0;
+		bool rightward = true;
+	};
+
 	namespace Singleton
 	{
 		struct TexturesContainer

@@ -22,6 +22,11 @@ namespace Control
 
 namespace Update
 {
+	void applyLinear
+	(
+		const Entity target,
+		const DeltaTime dt
+	);
 	void move(const DeltaTime dt);
 }
 

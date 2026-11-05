@@ -45,11 +45,11 @@ void startScene()
 		},
 		Component::Transform
 		{
-			.width = 160.0,
+			.width = 200.0,
 			.height = 1.0,
 		},
 		Component::OriginPoint{ .data = Enum::OriginPoint::CENTER }
-		);
+	);
 
 	Entity linearBox = EntityMaker::movingObject
 	(
@@ -63,10 +63,10 @@ void startScene()
 		},
 		Component::Velocity
 		{
-			.minX = -300.0,
-			.minY = -300.0,
-			.maxX = 300.0,
-			.maxY = 300.0,
+			.minX = -200.0,
+			.minY = -200.0,
+			.maxX = 200.0,
+			.maxY = 200.0,
 		},
 		Component::Transform
 		{
@@ -76,8 +76,13 @@ void startScene()
 		Component::OriginPoint{ .data = Enum::OriginPoint::CENTER },
 		Component::Acceleration
 		{
-			.x = 500.0,
-			.y = 500.0,
+			.x = 250.0,
+			.y = 250.0,
+		},
+		Component::SliderMovement
+		{
+			.start = -80.0,
+			.end = 80.0,
 		}
 	);
 
@@ -106,6 +111,11 @@ void startScene()
 		}
 
 		// update systems
+		Update::applyLinear
+		(
+			linearBox,
+			dt
+		);
 		Update::move(dt);
 
 		Asset::window().clear();
