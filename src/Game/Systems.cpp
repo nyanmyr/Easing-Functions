@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 #include <stdexcept>
+#include <print>
 
 #include "../Engine/NacreCoordinator.hpp"
 #include "Headers/Components.hpp"
@@ -116,13 +117,14 @@ namespace Control
 namespace Update
 {
 	template<typename T>
+	static T inverseLerp(T current, T max, T min)
+	{
+		return (current - min) / (max - min);
+	}
+	template<typename T>
 	static T easeOutElastic(T current, T max, T min)
 	{
-		T progress = 1.0 - [](T target, T min, T max)
-			{
-				return (target - min) / (max - min);
-			}
-		(current, min, max);
+		T progress = 1.0 - inverseLerp(current, min, max);
 
 		static const double c4 = (2 * std::acos(-1.0)) / 3;
 
@@ -132,38 +134,41 @@ namespace Update
 		return std::pow(2.0, -10.0 * progress) *
 			std::sin((progress * 10.0 - 0.75) * c4) + 1.0;
 	}
+	template<typename T>
+	static T lerp(T percentile, T max, T min)
+	{
+		return min + (max - min) * percentile;
+	}
 	void applyLinear
 	(
 		const Entity target,
 		const DeltaTime dt
 	)
 	{
-		auto& velocity = nc().getComponent<Component::Velocity>(target);
+		auto& progression = nc().getComponent<Component::Progression>(target);
 		auto& sliderMovement = nc().getComponent<Component::SliderMovement>(target);
-		const auto& pos = nc().getComponent<Component::Position>(target);
-		const auto& acceleration = nc().getComponent<Component::Acceleration>(target);
+		auto& pos = nc().getComponent<Component::Position>(target);
 
-		velocity.x += (acceleration.x * dt) * (sliderMovement.rightward ? 1 : -1);
+		//std::println("Progress: {}", progression.current);
+		progression.current += (dt / progression.duration) * (progression.rightward ? 1 : -1);
 
-		if (velocity.x > velocity.maxX)
+		if (progression.current > 1.0)
 		{
-			velocity.x = velocity.maxX;
+			progression.rightward = false;
+			progression.current = 1.0;
 		}
-		else if (velocity.x < velocity.minX)
+		if (progression.current < 0.0)
 		{
-			velocity.x = velocity.minX;
+			progression.rightward = true;
+			progression.current = 0.0;
 		}
+		
+		//std::println(
+		//	"lerp: {}",
+		//	lerp(progression.current, sliderMovement.end, sliderMovement.start)
+		//);
 
-		if (pos.x > sliderMovement.end)
-		{
-			sliderMovement.rightward = false;
-			velocity.x = -velocity.x;
-		}
-		if (pos.x < sliderMovement.start)
-		{
-			sliderMovement.rightward = true;
-			velocity.x = -velocity.x;
-		}
+		pos.x = lerp(progression.current, sliderMovement.end, sliderMovement.start);
 	}
 	void move(const DeltaTime dt)
 	{

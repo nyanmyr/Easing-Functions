@@ -89,7 +89,13 @@ namespace Component {
 	{
 		double start = 0.0;
 		double end = 0.0;
+	};
+
+	struct Progression
+	{
 		bool rightward = true;
+		double current = 0.0;
+		double duration = 0.0;
 	};
 
 	namespace Singleton

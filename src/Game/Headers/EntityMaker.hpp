@@ -19,6 +19,7 @@ namespace EntityMaker
 		const Component::Velocity& velocity,
 		const Component::Transform& transform,
 		const Component::OriginPoint& originPoint,
+		const Component::Progression& progression,
 		const Component::Acceleration& acceleration,
 		const Component::SliderMovement& sliderMovement
 	);

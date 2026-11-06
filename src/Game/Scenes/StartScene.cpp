@@ -74,6 +74,7 @@ void startScene()
 			.height = 40.0,
 		},
 		Component::OriginPoint{ .data = Enum::OriginPoint::CENTER },
+		Component::Progression{ .duration = 1.0 },
 		Component::Acceleration
 		{
 			.x = 250.0,
